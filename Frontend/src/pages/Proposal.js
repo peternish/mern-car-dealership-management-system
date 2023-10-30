@@ -117,7 +117,7 @@ function ProposalDetails() {
             <tbody className="divide-y divide-gray-200">
               {proposal.map((element, index) => {
                 return (
-                  <tr key={element._id} className={element.state === 'edited' ? 'bg-yellow-100' : element.state == 'read' ? 'bg-green-100' : 'bg-white'}>
+                  <tr key={element._id} className={element.state === 'edited' ? 'bg-yellow-100' : element.state === 'read' ? 'bg-green-100' : 'bg-white'}>
                     <td className="whitespace-nowrap px-4 py-2  text-gray-900">
                       {element.name}
                     </td>
