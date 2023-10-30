@@ -11,8 +11,6 @@ function PurchaseDetails() {
   const [updatePage, setUpdatePage] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState('');
-
-  const [approvalState, setApprovalState] = useState('Approve')
   
   const authContext = useContext(AuthContext);
 
@@ -54,7 +52,7 @@ function PurchaseDetails() {
     // Handle Search Term
     const handleSearchTerm = (e) => {
       setSearchTerm(e.target.value);
-      if (searchTerm == '') {
+      if (searchTerm === '') {
         fetchPurchaseData();
       } else {
         fetchSearchData();
@@ -65,7 +63,7 @@ function PurchaseDetails() {
   const approveItem = (id) => {
     fetch(`http://localhost:4000/api/product/approve/${id}`)
     .then((response) => {
-      if (response.status == 200) {
+      if (response.status === 200) {
         setUpdatePage(!updatePage);
       } else {
         alert('Sorry. Please retry.')
@@ -181,7 +179,7 @@ function PurchaseDetails() {
             <tbody className="divide-y divide-gray-200">
               {purchase.map((element, index) => {
                 return (
-                  <tr key={element._id} className={element.state == 'on sale' ? 'bg-green-100' : 'bg-white'}>
+                  <tr key={element._id} className={element.state === 'on sale' ? 'bg-green-100' : 'bg-white'}>
                     <td className="whitespace-nowrap px-4 py-2  text-gray-900">
                       {element.vin}
                     </td>
@@ -195,7 +193,7 @@ function PurchaseDetails() {
                       {element.year}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {new Date(element.purchaseDate).toLocaleDateString() ==
+                      {new Date(element.purchaseDate).toLocaleDateString() ===
                       new Date().toLocaleDateString()
                         ? "Today"
                         : new Date(element.purchaseDate).toLocaleDateString()}

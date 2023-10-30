@@ -34,7 +34,7 @@ function ProposalDetails() {
       method: 'POST'
     })
     .then((res) => {
-      if (res.status == 200) {
+      if (res.status === 200) {
         setUpdatePage(!updatePage);
       } else {
         alert('Sorry. Please retry.')
@@ -117,7 +117,7 @@ function ProposalDetails() {
             <tbody className="divide-y divide-gray-200">
               {proposal.map((element, index) => {
                 return (
-                  <tr key={element._id} className={element.state == 'edited' ? 'bg-yellow-100' : element.state == 'read' ? 'bg-green-100' : 'bg-white'}>
+                  <tr key={element._id} className={element.state === 'edited' ? 'bg-yellow-100' : element.state == 'read' ? 'bg-green-100' : 'bg-white'}>
                     <td className="whitespace-nowrap px-4 py-2  text-gray-900">
                       {element.name}
                     </td>
@@ -128,7 +128,7 @@ function ProposalDetails() {
                       {element.message}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {new Date(element.date).toLocaleDateString() ==
+                      {new Date(element.date).toLocaleDateString() ===
                       new Date().toLocaleDateString()
                         ? "Today"
                         : new Date(element.date).toLocaleDateString()}
@@ -141,7 +141,7 @@ function ProposalDetails() {
                           Edit
                       </span>
                     </td>
-                    {JSON.parse(localStorage.getItem('user')).email == 'peter95613@gmail.com'
+                    {JSON.parse(localStorage.getItem('user')).email === 'peter95613@gmail.com'
                       ?  
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       <span

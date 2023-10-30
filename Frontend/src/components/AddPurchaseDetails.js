@@ -42,7 +42,7 @@ export default function AddPurchaseDetails({
       .then((result) => {
         console.log(result);
         handlePageUpdate();
-        if (result.status == 200) {
+        if (result.status === 200) {
           alert("pruchase information successfully added!");
           addSaleModalSetting();
         } else {
