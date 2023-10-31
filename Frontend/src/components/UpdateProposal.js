@@ -35,7 +35,7 @@ export default function UpdateProposalModal({
       .then((result) => {
         console.log(result);
         handlePageUpdate();
-        if (result.status == 200) {
+        if (result.status === 200) {
           alert("Message successfully updated!");
           updateModalSetting();
         } else {
@@ -107,7 +107,9 @@ export default function UpdateProposalModal({
                               name="name"
                               placeholder="Input Your Name"
                               value={proposal.name}
-                              disabled
+                              onChange={(e) =>
+                                handleInputChange(e.target.name, e.target.value)
+                              }
                             />
                           </div>
                           <div>
@@ -115,7 +117,7 @@ export default function UpdateProposalModal({
                               htmlFor="subject"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                              Subject
+                              VIN
                             </label>
                             <input
                               type="text"
@@ -126,7 +128,7 @@ export default function UpdateProposalModal({
                                 handleInputChange(e.target.name, e.target.value)
                               }
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="Input the Subject"
+                              placeholder="Input the VIN Number"
                             />
                           </div>
                           <div>

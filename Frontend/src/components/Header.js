@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import AuthContext from "../AuthContext";
@@ -21,6 +21,27 @@ function classNames(...classes) {
 export default function Header() {
   const authContext = useContext(AuthContext);
   const localStorageData = JSON.parse(localStorage.getItem("user"));
+
+  const [unreadMessage, setUnreadMessage] = useState();
+
+  useEffect(() => {
+    fetchUnreadMessage();
+  }, [])
+
+  const fetchUnreadMessage = () => {
+    fetch('http://localhost:4000/api/proposal/getunread', 
+    {
+      method: "POST"
+    })
+    .then((res) => res.json())
+    .then((res) => {
+      setUnreadMessage(res);
+    })
+    .catch ((err) => {
+      console.log(err);
+    })
+  }
+
   return (
     <>
       <div className="min-h-full">
@@ -45,24 +66,21 @@ export default function Header() {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
-                      {/* <button
-                        type="button"
-                        className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                      >
-                        <span className="sr-only">View notifications</span>
+                      <button type="button" className="relative inline-flex items-center p-3 text-sm font-medium text-center text-white rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <span className="sr-only">Notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
-                      </button> */}
+                        <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -right-1 dark:border-gray-900">
+                          {unreadMessage}
+                        </div>
+                      </button>
+
 
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         <div>
-                          <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                          <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 text-white font-bold italic">
                             <span className="sr-only">Open user menu</span>
-                            <img
-                              className="h-8 w-8 rounded-full"
-                              src={localStorageData.imageUrl}
-                              alt="profile"
-                            />
+                            Peter Aleksic
                           </Menu.Button>
                         </div>
                         <Transition
@@ -140,13 +158,6 @@ export default function Header() {
                 </div>
                 <div className="border-t border-gray-700 pt-4 pb-3">
                   <div className="flex items-center px-5">
-                    <div className="flex-shrink-0">
-                      <img
-                        className="h-10 w-10 rounded-full"
-                        src={localStorageData.imageUrl}
-                        alt="profile"
-                      />
-                    </div>
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">
                         {localStorageData.firstName +
@@ -157,13 +168,13 @@ export default function Header() {
                         {localStorageData.email}
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      className="ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    >
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
+                    <button type="button" className="ml-auto relative inline-flex items-center p-3 text-sm font-medium text-center text-white rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <span className="sr-only">Notifications</span>
+                        <BellIcon className="h-6 w-6" aria-hidden="true" />
+                        <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -right-1 dark:border-gray-900">
+                          {unreadMessage}
+                        </div>
+                      </button>
                   </div>
                   <div className="mt-3 space-y-1 px-2">
                     {userNavigation.map((item) => (

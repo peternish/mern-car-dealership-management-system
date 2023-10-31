@@ -3,24 +3,23 @@ const mongoose = require("mongoose");
 const SaleSchema = new mongoose.Schema(
   {
     vin: {
-      type: mongoose.Schema.Types.String,
-      ref: "product",
-      required: true,
-    },
-    SalesDate: {
       type: String,
       required: true,
     },
-    PaymentType: {
+    salesDate: {
+      type: Array,
+      required: true,
+    },
+    paymentType: {
       type: String,
       required: true,
     },
-    Price: {
+    price: {
       type: Number,
       required: true,
     },
-    Income: {
-      type: Number,
+    income: {
+      type: Array,
     }
   },
   { timestamps: true }

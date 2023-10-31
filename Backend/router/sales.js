@@ -6,7 +6,7 @@ const sales = require("../controller/sales");
 app.post("/add", sales.addSales);
 
 // Get All Sales
-app.get("/get/:userID", sales.getSalesData);
+app.get("/get/", sales.getSalesData);
 app.get("/getmonthly", sales.getMonthlySales);
 
 

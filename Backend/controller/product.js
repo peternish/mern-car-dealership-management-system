@@ -3,21 +3,34 @@ const Sales = require("../models/sales");
 
 // Add Post
 const addProduct = (req, res) => {
-  const addProduct = new Product({
-    name: req.body.name,
-    manufacturer: req.body.manufacturer,
-    stock: 0,
-    description: req.body.description,
-  });
 
-  addProduct
-    .save()
-    .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      res.status(402).send(err);
+  const existence = Product.findOne({
+    vin: req.body.vin
+  });
+  console.log(existence);
+
+  if (existence) {
+    console.log('vin number already exists');
+    res.status(402).send()
+  } else {
+    const addProduct = new Product({
+      name: req.body.name,
+      manufacturer: req.body.manufacturer,
+      stock: 0,
+      description: req.body.description,
     });
+  
+    addProduct
+      .save()
+      .then((result) => {
+        res.status(200).send(result);
+      })
+      .catch((err) => {
+        res.status(402).send(err);
+      });
+  }
+
+
 };
 
 // Get All Products
@@ -33,7 +46,7 @@ const deleteSelectedProduct = async (req, res) => {
   const deleteProduct = await Product.deleteOne(
     { _id: req.params.id }
   );
-  const deletePurchaseProduct = await Purchase.deleteOne(
+  const deletePurchaseProduct = await Product.deleteOne(
     { ProductID: req.params.id }
   );
 
@@ -90,9 +103,20 @@ const searchProduct = async (req, res) => {
   const products = await Product.find({
     vin: { $regex: searchTerm, $options: "i" },
   });
-  console.log(products);
   res.json(products);
 };
+
+//  Get VIN Numbers of cars on sale
+const getVIN = async (req, res) => {
+  let vin = [];
+  const result = await Product.find({
+    state: 'on sale',   
+  });
+  for (i in result) {
+    vin.push(result[i].vin);
+  }
+  res.json(vin);
+}
 
 module.exports = {
   addProduct,
@@ -101,4 +125,5 @@ module.exports = {
   approveSelectedProduct,
   updateSelectedProduct,
   searchProduct,
+  getVIN,
 };

@@ -1,32 +1,45 @@
 const Sales = require("../models/sales");
+const Product = require("../models/product");
 
 // Add Sales
-const addSales = (req, res) => {
-  const addSale = new Sales({
-    ProductID: req.body.productID,
-    StoreID: req.body.storeID,
-    StockSold: req.body.stockSold,
-    SaleDate: req.body.saleDate,
-    TotalSaleAmount: req.body.totalSaleAmount,
-  });
-
-  addSale
-    .save()
-    .then((result) => {
-      soldStock(req.body.productID, req.body.stockSold);
-      res.status(200).send(result);
+const addSales = async (req, res) => {
+  try {
+    let product = await Sales.findOne({
+      vin: req.body.vinNumber,
     })
-    .catch((err) => {
-      res.status(402).send(err);
-    });
+
+    if (!product) {
+      console.log('ewe');
+      await new Sales({
+        vin: req.body.vinNumber,
+        salesDate: [req.body.salesDate],
+        paymentType: req.body.paymentType,
+        price: req.body.price,
+        income: [req.body.income],
+      }).save();
+    
+      await Product.findOneAndUpdate(
+        {vin: req.body.vinNumber},
+        {state: 'sold'},
+        {returnOriginal: false},
+      );
+
+    } else {
+      product.salesDate.push(req.body.salesDate);
+      product.income.push(req.body.income);
+      await product.save();
+    }
+    res.status(200).send();
+  } catch (err) {
+    console.log(err);
+    res.status(402).send();
+  }
 };
 
 // Get All Sales Data
 const getSalesData = async (req, res) => {
-  const findAllSalesData = await Sales.find({"userID": req.params.userID})
-    .sort({ _id: -1 })
-    .populate("ProductID")
-    .populate("StoreID"); // -1 for descending order
+  const findAllSalesData = await Sales.find()
+    .sort({ _id: -1 });
   res.json(findAllSalesData);
 };
 

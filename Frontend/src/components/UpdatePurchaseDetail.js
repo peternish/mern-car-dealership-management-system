@@ -114,7 +114,6 @@ export default function UpdatePurchaseDetail({
                               name="vin"
                               value={purchase.vin}
                               placeholder="Input VIN Number"
-                              disabled
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }

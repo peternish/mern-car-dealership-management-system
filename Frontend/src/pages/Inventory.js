@@ -31,25 +31,15 @@ function Inventory() {
       .catch((err) => console.log(err));
   };
 
-  // Fetching Data of Search Products
-  const fetchSearchData = () => {
-    fetch(`http://localhost:4000/api/product/search?searchTerm=${searchTerm}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setAllProducts(data);
-      })
-      .catch((err) => console.log(err));
-  };
-
   // Handle Search Term
-  const handleSearchTerm = (e) => {
-    setSearchTerm(e.target.value);
-    if (searchTerm == '') {
-      fetchProductsData();
-    } else {
-      fetchSearchData();
-    }
-  };
+  // const handleSearchTerm = (e) => {
+  //   setSearchTerm(e.target.value);
+  //   if (searchTerm == '') {
+  //     fetchProductsData();
+  //   } else {
+  //     fetchSearchData();
+  //   }
+  // };
 
   return (
     <div className="col-span-12 lg:col-span-10  flex justify-center">
@@ -142,8 +132,8 @@ function Inventory() {
         <div className="overflow-x-auto rounded-lg border bg-white border-gray-200 ">
           <div className="flex justify-between pt-5 pb-3 px-3">
             <div className="flex gap-4 justify-center items-center ">
-              <span className="font-bold">Search by VIN</span>
-              <div className="flex justify-center items-center px-2 border-2 rounded-md ">
+              <span className="font-bold">Inventory</span>
+              {/* <div className="flex justify-center items-center px-2 border-2 rounded-md ">
                 <img
                   alt="search-icon"
                   className="w-5 h-5"
@@ -156,7 +146,7 @@ function Inventory() {
                   value={searchTerm}
                   onChange={handleSearchTerm}
                 />
-              </div>
+              </div> */}
             </div>
             <div className="flex gap-4">
               {/* <button

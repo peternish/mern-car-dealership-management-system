@@ -7,7 +7,7 @@ const addProposal = (req, res) => {
       subject: req.body.subject,
       message: req.body.message,
       date: req.body.date,
-      state: 'not read',
+      state: 'unread',
     });
   
     addProposal
@@ -40,7 +40,6 @@ const updateProposal = async (req, res) => {
         },
         { returnOriginal: false }
       );
-      console.log(updatedResult);
       res.status(200).send();
     } catch (error) {
       console.log(error);
@@ -52,15 +51,13 @@ const updateProposal = async (req, res) => {
 const readProposal = async (req, res) => {
     try {
         const name = req.params.name;
-        console.log(res);
-        const readResult = await Proposal.findOneAndUpdate(
-            {name: name},
+        const readResult = await Proposal.findByIdAndUpdate(
+            req.params.id,
             {
                 state: 'read',
             },
             {returnOriginal: false},
         );
-        console.log(readResult);
         res.status(200).send();
     } catch (err) {
         console.log(err);
@@ -68,9 +65,22 @@ const readProposal = async (req, res) => {
     }
 }
 
-  module.exports = {
+// Get Unread Messages
+const getUnreadMessage = async (req, res) => {
+    try {
+        const count = await Proposal.countDocuments({
+            state: { $in: ['edited', 'unread'] },
+        });
+        res.json(count);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+module.exports = {
     addProposal,
     getAllProposals,
     updateProposal,
     readProposal,
-  };
+    getUnreadMessage,
+};

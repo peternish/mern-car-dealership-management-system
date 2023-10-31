@@ -12,6 +12,9 @@ app.post("/get", proposal.getAllProposals);
 app.post("/update", proposal.updateProposal);
 
 // Read Proposal
-app.post('/read/:name', proposal.readProposal);
+app.post('/read/:id', proposal.readProposal);
+
+// get unread messages
+app.post('/getunread', proposal.getUnreadMessage);
 
 module.exports = app;
