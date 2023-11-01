@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import SearchByVIN from "../components/SearchByVIN";
 
 function Inventory() {
   const [products, setAllProducts] = useState([]);
@@ -111,9 +112,10 @@ function Inventory() {
           <div className="flex justify-between pt-5 pb-3 px-3">
             <div className="flex gap-4 justify-center items-center ">
               <span className="font-bold">Inventory</span>
+              <SearchByVIN />
             </div>
           </div>
-          <table className="min-w-full divide-y-2 divide-gray-200 text-sm">
+          <table id="myTb" className="min-w-full divide-y-2 divide-gray-200 text-sm">
             <thead>
               <tr>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">

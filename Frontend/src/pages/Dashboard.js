@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Option, Select } from "@material-tailwind/react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -19,6 +18,8 @@ function Dashboard() {
   const [manufacturerdata, setManufacturerdata] = useState({});
   const [doughnutBackground, setDoughnutBackground] = useState([]);
   const [monthlySalesData, setMonthlySalesData] = useState({});
+
+  // data for bar plot
   const [chart, setChart] = useState({
     options: {
       chart: {
@@ -44,11 +45,12 @@ function Dashboard() {
     series: [
       {
         name: "series",
-        data: [10, 20, 40, 50, 60, 20, 10, 35, 45, 70, 25, 70],
+        data: [],
       },
     ],
   });
 
+  // data for doughnut plot
   const data = {
     labels: Object.keys(manufacturerdata),
     datasets: [
@@ -213,12 +215,22 @@ function Dashboard() {
       <div className="grid grid-cols-1 col-span-12 lg:col-span-10 gap-6 lg:grid-cols-2  p-4 ">
         <div className="flex flex-col gap-4 rounded-lg border  border-gray-100 bg-white p-6  ">
 
-        <div className="mb-3 w-72">
-            <select  onChange={(e) => updateChartData(monthlySalesData[e.target.value])}>
-              <option>2023</option>
-              <option>2024</option>
-              <option>2025</option>
-            </select>
+          <div>
+            <div className="mb-3 text-l">
+            <span>
+              Sales of This Year:
+              <span className="ml-5 text-red-500 text-2xl">
+                ${chart.series[0].data.reduce((sum, a) => sum + a, 0)}
+              </span>
+            </span>
+            </div>
+            <div>
+              <select  onChange={(e) => updateChartData(monthlySalesData[e.target.value])}>
+                <option>2023</option>
+                <option>2024</option>
+                <option>2025</option>
+              </select>
+            </div>
           </div>
           <div>
           <Chart

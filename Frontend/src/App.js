@@ -60,7 +60,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          {/* <Route path="/register" element={<Register />} /> */}
           <Route
             path="/"
             element={
@@ -85,10 +85,6 @@ const App = () => {
               <Route path="/proposals" element={<ProposalDetails />} />
               </>
             }
-            {/* <Route index element={<Dashboard />} />
-            <Route path="/purchase" element={<PurchaseDetails />} />
-            <Route path="/sales" element={<Sales />} />
-            <Route path="/proposals" element={<ProposalDetails />} /> */}
           </Route>
           <Route path="*" element={<NoPageFound />} />
         </Routes>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import AddProposalNoteDetail from "../components/AddProposal";
 import UpdateProposalModal from "../components/UpdateProposal";
 import AuthContext from "../AuthContext";
-import { Popover, PopoverContent, PopoverHandler } from "@material-tailwind/react";
+import { Popover, PopoverContent, PopoverHandler, Typography } from "@material-tailwind/react";
 
 function ProposalDetails() {
   const [proposal, setAllProposalData] = useState([]);
@@ -123,12 +123,14 @@ function ProposalDetails() {
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       <Popover placement="top-end">
+                        <Typography style={{width:'200'}}>
                         <PopoverHandler>   
                           <span>{element.message}</span>
                         </PopoverHandler>
                         <PopoverContent>
                           <span>{element.message}</span>
                         </PopoverContent>
+                        </Typography>
                       </Popover>
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
@@ -142,7 +144,6 @@ function ProposalDetails() {
                           className="text-green-700 cursor-pointer"
                           onClick={() => updateProposalModalSetting(element)}
                         >
-                          Edit
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                           </svg>
@@ -155,7 +156,6 @@ function ProposalDetails() {
                           className="text-blue-700 cursor-pointer"
                           onClick={() => readItem(element._id)}
                         >
-                          Read
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
                           </svg>

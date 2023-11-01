@@ -22,8 +22,6 @@ export default function UpdatePurchaseDetail({
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
 
-  console.log("PPu: ", purchase);
-
   // Handling Input Change for input fields
   const handleInputChange = (key, value) => {
     setPurchase({ ...purchase, [key]: value });

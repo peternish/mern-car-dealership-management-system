@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import AddPurchaseDetails from "../components/AddPurchaseDetails";
 import AuthContext from "../AuthContext";
 import UpdatePurchaseDetail from "../components/UpdatePurchaseDetail";
+import SearchByVIN from "../components/SearchByVIN";
 
 function PurchaseDetails() {
   const [showPurchaseModal, setPurchaseModal] = useState(false);
@@ -37,17 +38,6 @@ function PurchaseDetails() {
         setUpdatePage(!updatePage);
       });
   };
-  
-    // Handle Search Term
-    // const handleSearchTerm = (e) => {
-    //   setSearchTerm(e.target.value);
-    //   console.log(e.target.value);
-    //   if (searchTerm === '') {
-    //     fetchPurchaseData();
-    //   } else {
-    //     fetchSearchData();
-    //   }
-    // };
 
   // approve the Item for sale
   const approveItem = (id) => {
@@ -104,21 +94,7 @@ function PurchaseDetails() {
           <div className="flex justify-between pt-5 pb-3 px-3">
             <div className="flex gap-4 justify-center items-center ">
               <span className="font-bold">Purchase</span>
-              {/* <div className="flex justify-center items-center px-2 border-2 rounded-md ">
-                <img
-                  alt="search-icon"
-                  className="w-5 h-5"
-                  src={require("../assets/search-icon.png")}
-                />
-                <input
-                  className="border-none outline-none focus:border-none text-xs"
-                  type="text"
-                  id="searchbar"
-                  placeholder="Search here"
-                  value={searchTerm}
-                  onChange={handleSearch}
-                />
-              </div> */}
+              <SearchByVIN />
             </div>
             <div className="flex gap-4">
               <button
