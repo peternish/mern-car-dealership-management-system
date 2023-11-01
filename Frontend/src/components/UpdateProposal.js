@@ -9,6 +9,7 @@ export default function UpdateProposalModal({
 }) {
 
   const [proposal, setProposal] = useState({
+    id: updateProposal._id,
     name: updateProposal.name,
     subject: updateProposal.subject,
     message: updateProposal.message,

@@ -18,13 +18,11 @@ const App = () => {
   const [user, setUser] = useState("");
   const [loader, setLoader] = useState(true);
   let myLoginUser = JSON.parse(localStorage.getItem("user"));
-  // console.log("USER: ",user)
 
   useEffect(() => {
     if (myLoginUser) {
       setUser(myLoginUser._id);
       setLoader(false);
-      // console.log("inside effect", myLoginUser)
     } else {
       setUser("");
       setLoader(false);
@@ -71,11 +69,26 @@ const App = () => {
               </ProtectedWrapper>
             }
           >
-            <Route index element={<Dashboard />} />
-            <Route path="/inventory" element={<Inventory />} />
+            {
+              localStorage.getItem('user') && JSON.parse(localStorage.user).email === 'peter95613@gmail.com'
+              ?
+              <>
+              <Route index element={<Dashboard />} />
+              <Route path="/inventory" element={<Inventory />} />
+              <Route path="/purchase" element={<PurchaseDetails />} />
+              <Route path="/sales" element={<Sales />} />
+              <Route path="/proposals" element={<ProposalDetails />} />
+              </>
+              :
+              <>
+              <Route path="/inventory" element={<Inventory />} />
+              <Route path="/proposals" element={<ProposalDetails />} />
+              </>
+            }
+            {/* <Route index element={<Dashboard />} />
             <Route path="/purchase" element={<PurchaseDetails />} />
             <Route path="/sales" element={<Sales />} />
-            <Route path="/proposals" element={<ProposalDetails />} />
+            <Route path="/proposals" element={<ProposalDetails />} /> */}
           </Route>
           <Route path="*" element={<NoPageFound />} />
         </Routes>

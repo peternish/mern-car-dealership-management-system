@@ -31,7 +31,7 @@ const getAllProposals = async (req, res) => {
 const updateProposal = async (req, res) => {
     try {
       const updatedResult = await Proposal.findOneAndUpdate(
-        { name: req.body.name },
+        { _id: req.body.id },
         {
           subject: req.body.subject,
           message: req.body.message,

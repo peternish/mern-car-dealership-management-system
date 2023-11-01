@@ -1,5 +1,5 @@
 // import { LockClosedIcon } from "@heroicons/react/20/solid";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../AuthContext";
 import logo from '../assets/logo.png'
@@ -14,6 +14,11 @@ function Login() {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (localStorage.getItem('user')) {
+        localStorage.removeItem('user')
+      }
+    },[])
 
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -29,7 +34,6 @@ function Login() {
           authContext.signin(data._id, () => {
             navigate("/");
           });
-          console.log(authContext.user);
         })
         .catch((err) => {
           alert("Wrong credentials, Try again")

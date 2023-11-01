@@ -8,6 +8,9 @@ app.post("/add", purchase.addPurchase);
 // Get All Purchase Data
 app.post("/get/", purchase.getPurchaseData);
 
+// Get Total Purchase Amount
+app.post('/totalpurchaseamount', purchase.getTotalPurchaseAmount);
+
 module.exports = app;
 
 // http://localhost:4000/api/purchase/add POST

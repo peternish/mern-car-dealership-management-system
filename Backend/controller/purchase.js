@@ -36,4 +36,14 @@ const getPurchaseData = async (req, res) => {
   res.json(findAllPurchaseData);
 };
 
-module.exports = { addPurchase, getPurchaseData };
+// Get total purchase amount
+const getTotalPurchaseAmount = async (req, res) => {
+  let totalPurchaseAmount = 0;
+  const purchaseData = await Product.find();
+  purchaseData.forEach((purchase) => {
+    totalPurchaseAmount += (purchase.initial + purchase.additional);
+  });
+  res.json({ totalPurchaseAmount });
+};
+
+module.exports = { addPurchase, getPurchaseData, getTotalPurchaseAmount };

@@ -1,16 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
-import AuthContext from "../AuthContext";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+
 export const data = {
   labels: ["Toyota", "Hyundai", "KIA", "Volvo", "Wagen", "Ford"],
   datasets: [
     {
-      label: "# of Votes",
-      data: [0, 1, 5, 8, 9, 15],
+      data: [8, 9, 15,0,0,0],
       backgroundColor: [
         "rgba(255, 99, 132, 0.2)",
         "rgba(54, 162, 235, 0.2)",
@@ -33,11 +32,17 @@ export const data = {
 };
 
 function Dashboard() {
-  const [saleAmount, setSaleAmount] = useState("");
-  const [purchaseAmount, setPurchaseAmount] = useState("");
-  const [stores, setStores] = useState([]);
+  const [saleAmount, setSaleAmount] = useState([]);
+  const [purchaseAmount, setPurchaseAmount] = useState([]);
   const [products, setProducts] = useState([]);
+  const [salesstate, setSalesState] = useState({
+    good: 0,
+    normal: 0,
+    bad: 0
+  });
 
+  const [manufacturerdata, setManufacturerdata] = useState({});
+  const [doughnutBackground, setDoughnutBackground] = useState([]);
   const [chart, setChart] = useState({
     options: {
       chart: {
@@ -68,6 +73,17 @@ function Dashboard() {
     ],
   });
 
+  const data = {
+    labels: Object.keys(manufacturerdata),
+    datasets: [
+      {
+        data: Object.values(manufacturerdata),
+        backgroundColor: doughnutBackground,
+        borderWidth: 1,
+      },
+    ],
+  };
+
   // Update Chart Data
   const updateChartData = (salesData) => {
     setChart({
@@ -81,152 +97,126 @@ function Dashboard() {
     });
   };
 
-  const authContext = useContext(AuthContext);
-
   useEffect(() => {
     fetchTotalSaleAmount();
     fetchTotalPurchaseAmount();
-    fetchStoresData();
     fetchProductsData();
     fetchMonthlySalesData();
   }, []);
 
+  // Set the background colors of the doughnut chart as random
+  const getRandomRGBA = () => {
+    var r = Math.floor(Math.random() * 256);
+    var g = Math.floor(Math.random() * 256);
+    var b = Math.floor(Math.random() * 256);
+    var a = 0.4;
+    return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
+  }
+  
+  const generateRandomColorsArray = (count) => {
+    var colors = [];
+    for (var i = 0; i < count; i++) {
+      colors.push(getRandomRGBA());
+    }
+    return colors;
+  }
+
   // Fetching total sales amount
   const fetchTotalSaleAmount = () => {
     fetch(
-      `http://localhost:4000/api/sales/get/${authContext.user}/totalsaleamount`
+      'http://localhost:4000/api/sales/totalsalesamount',
+      {method: 'POST'},
     )
-      .then((response) => response.json())
-      .then((datas) => setSaleAmount(datas.totalSaleAmount));
+      .then((res) => res.json())
+      .then((res) => {
+        setSaleAmount(res.total);
+        setSalesState({
+          good: res.good,
+          normal: res.normal,
+          bad: res.bad
+        });
+      });
   };
 
   // Fetching total purchase amount
   const fetchTotalPurchaseAmount = () => {
     fetch(
-      `http://localhost:4000/api/purchase/get/${authContext.user}/totalpurchaseamount`
+      'http://localhost:4000/api/purchase/totalpurchaseamount',
+      {method: 'POST'},
     )
-      .then((response) => response.json())
-      .then((datas) => setPurchaseAmount(datas.totalPurchaseAmount));
-  };
-
-  // Fetching all stores data
-  const fetchStoresData = () => {
-    fetch(`http://localhost:4000/api/store/get/${authContext.user}`)
-      .then((response) => response.json())
-      .then((datas) => setStores(datas));
+      .then((res) => res.json())
+      .then((res) => setPurchaseAmount(res.totalPurchaseAmount));
   };
 
   // Fetching Data of All Products
   const fetchProductsData = () => {
-    fetch(`http://localhost:4000/api/product/get/${authContext.user}`)
-      .then((response) => response.json())
-      .then((datas) => setProducts(datas))
+    fetch('http://localhost:4000/api/product/get',
+    {
+      method: 'POST'
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        // adjust response for chart drawing
+        const manufacturerdata = res.reduce((counts, car) => {
+          counts[car.manufacturer] = (counts[car.manufacturer] || 0) + 1; 
+          return counts
+        }, {});
+        setDoughnutBackground(generateRandomColorsArray(Object.keys(manufacturerdata).length));
+        setManufacturerdata(manufacturerdata);
+        setProducts(res);
+      })
       .catch((err) => console.log(err));
   };
 
   // Fetching Monthly Sales
   const fetchMonthlySalesData = () => {
-    fetch(`http://localhost:4000/api/sales/getmonthly`)
-      .then((response) => response.json())
-      .then((datas) => updateChartData(datas.salesAmount))
+    fetch('http://localhost:4000/api/sales/getmonthly',
+    {
+      method: 'POST'
+    })
+      .then((res) => res.json())
+      .then((res) => updateChartData(res.salesAmount))
       .catch((err) => console.log(err));
   };
 
   return (
-    <>
+    <div className="col-span-12 lg:col-span-10 justify-center">
+
       <div className="grid grid-cols-1 col-span-12 lg:col-span-10 gap-6 lg:grid-cols-3  p-4 ">
         <article className="flex flex-col gap-4 rounded-lg border  border-gray-100 bg-white p-6  ">
-          <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
-
-            <span className="text-xs font-medium"> 67.81% </span>
-          </div>
-
           <div>
-            <strong className="block text-sm font-medium text-gray-500">
+            <strong className="block text-sm font-medium text-gray-500 mb-3">
               Sales
             </strong>
 
             <p>
               <span className="text-2xl font-medium text-gray-900">
-                ${saleAmount}
+                $ {saleAmount}
               </span>
 
-              <span className="text-xs text-gray-500"> from $240.94 </span>
+              <span className="font-medium ml-3 inline-flex gap-2 self-end rounded bg-pink-100 px-3">{salesstate.bad}</span>
+              <span className="font-medium ml-3 inline-flex gap-2 self-end rounded bg-yellow-100 px-3">{salesstate.normal}</span>
+              <span className="font-medium ml-3 inline-flex gap-2 self-end rounded bg-green-100 px-3">{salesstate.good}</span>
             </p>
           </div>
         </article>
-
         <article className="flex flex-col  gap-4 rounded-lg border border-gray-100 bg-white p-6 ">
-          <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
-              />
-            </svg>
-
-            <span className="text-xs font-medium"> 67.81% </span>
-          </div>
-
           <div>
-            <strong className="block text-sm font-medium text-gray-500">
-              Purchase
+            <strong className="block text-sm font-medium text-gray-500 mb-3">
+              Total Expense
             </strong>
 
             <p>
               <span className="text-2xl font-medium text-gray-900">
                 {" "}
-                ${purchaseAmount}{" "}
+                $ {purchaseAmount}{" "}
               </span>
-
-              <span className="text-xs text-gray-500"> from $404.32 </span>
             </p>
           </div>
         </article>
         <article className="flex flex-col   gap-4 rounded-lg border border-gray-100 bg-white p-6 ">
-          <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
-              />
-            </svg>
-
-            <span className="text-xs font-medium"> 67.81% </span>
-          </div>
-
           <div>
-            <strong className="block text-sm font-medium text-gray-500">
+            <strong className="block text-sm font-medium text-gray-500 mb-3">
               Total Products
             </strong>
 
@@ -235,61 +225,30 @@ function Dashboard() {
                 {" "}
                 {products.length}{" "}
               </span>
-
-              {/* <span className="text-xs text-gray-500"> from $404.32 </span> */}
+              <span className="font-medium ml-3 inline-flex gap-2 self-end rounded bg-green-100 px-3">on sale: {products.filter(x => x.state === 'on sale').length}</span>
+              <span className="font-medium ml-3 inline-flex gap-2 self-end rounded bg-slate-100 px-3">not on sale: {products.filter(x => x.state === 'not on sale').length}</span>
             </p>
           </div>
         </article>
-        {/* <article className="flex flex-col   gap-4 rounded-lg border border-gray-100 bg-white p-6 ">
-          <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
-              />
-            </svg>
+      </div>
 
-            <span className="text-xs font-medium"> 67.81% </span>
-          </div>
-
-          <div>
-            <strong className="block text-sm font-medium text-gray-500">
-              Total Stores
-            </strong>
-
-            <p>
-              <span className="text-2xl font-medium text-gray-900">
-                {" "}
-                {stores.length}{" "}
-              </span>
-
-              <span className="text-xs text-gray-500"> from 0 </span>
-            </p>
-          </div>
-        </article> */}
-        <div className="flex justify-around bg-white rounded-lg py-8 col-span-full justify-center">
-          <div>
-            <Chart
-              options={chart.options}
-              series={chart.series}
-              type="bar"
-              width="500"
-            />
-          </div>
-          <div>
-            <Doughnut data={data} />
+      <div className="grid grid-cols-1 col-span-12 lg:col-span-10 gap-6 lg:grid-cols-2  p-4 ">
+        <div className="flex flex-col gap-4 rounded-lg border  border-gray-100 bg-white p-6  ">
+          <Chart
+            options={chart.options}
+            series={chart.series}
+            type="bar"
+            width="500"
+          />
+        </div>
+        <div className="flex content-center flex-col gap-4 rounded-lg border border-gray-100 bg-white p-6">
+          <div className="w-3/4">
+          <Doughnut data={data} />
           </div>
         </div>
       </div>
-    </>
+
+    </div>
   );
 }
 

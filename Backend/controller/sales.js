@@ -46,11 +46,28 @@ const getSalesData = async (req, res) => {
 // Get total sales amount
 const getTotalSalesAmount = async(req,res) => {
   let totalSaleAmount = 0;
-  const salesData = await Sales.find({"userID": req.params.userID});
+  let normal = 0;
+  let good = 0;
+  let bad = 0;
+  const salesData = await Sales.find();
   salesData.forEach((sale)=>{
-    totalSaleAmount += sale.TotalSaleAmount;
+    totalSaleAmount += sale.income.reduce((partialSum, a) => parseInt(partialSum) + parseInt(a), 0);
+    sale.price <= sale.income.reduce((partialSum, a) => parseInt(partialSum) + parseInt(a), 0) 
+    ?
+    good += 1
+    :
+    0.7 * sale.price <= sale.income.reduce((partialSum, a) => parseInt(partialSum) + parseInt(a), 0)
+    ?
+    normal += 1
+    :
+    bad += 1
   })
-  res.json({totalSaleAmount});
+  res.json({
+    total: totalSaleAmount,
+    good: good,
+    normal: normal,
+    bad: bad,
+  });
 
 }
 

@@ -54,7 +54,7 @@ export default function Header() {
                     <div className="flex-shrink-0">
                       <div className="flex justify-center items-center gap-2">
                         <img
-                          className="h-8 w-8"
+                          className="h-8"
                           src={require("../assets/logo.png")}
                           alt="Inventory Management System"
                         />
@@ -80,7 +80,7 @@ export default function Header() {
                         <div>
                           <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 text-white font-bold italic">
                             <span className="sr-only">Open user menu</span>
-                            Peter Aleksic
+                            {JSON.parse(localStorage.getItem('user')).firstName} {JSON.parse(localStorage.getItem('user')).lastName}
                           </Menu.Button>
                         </div>
                         <Transition

@@ -89,7 +89,6 @@ const updateSelectedProduct = async (req, res) => {
       },
       { returnOriginal: false }
     );
-    console.log(updatedResult);
     res.status(200).send();
   } catch (error) {
     console.log(error);

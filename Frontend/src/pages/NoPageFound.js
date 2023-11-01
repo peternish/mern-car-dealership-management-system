@@ -5,7 +5,7 @@ function NoPageFound() {
   return (
     <div className="grid h-screen px-4 place-content-center">
       <div style={{position:"fixed", top:"5%", left:"10%"}} >
-        <Link to='/purchase' className="flex items-center gap-2 rounded-lg hover:bg-gray-100 px-4 py-2 text-gray-700 bg-slate-300">Back</Link>
+        <Link to='/inventory' className="flex items-center gap-2 rounded-lg hover:bg-gray-100 px-4 py-2 text-gray-700 bg-slate-300">Back</Link>
       </div>
       <div class="text-center">
         <svg

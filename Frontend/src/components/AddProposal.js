@@ -34,7 +34,7 @@ export default function AddProposalNoteDetail({
       .then((result) => {
         console.log(result);
         handlePageUpdate();
-        if (result.status == 200) {
+        if (result.status === 200) {
           alert("Message successfully added!");
           addProposalModalSetting();
         } else {

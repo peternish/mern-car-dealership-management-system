@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import AddProposalNoteDetail from "../components/AddProposal";
 import UpdateProposalModal from "../components/UpdateProposal";
 import AuthContext from "../AuthContext";
+import { Popover, PopoverContent, PopoverHandler } from "@material-tailwind/react";
 
 function ProposalDetails() {
   const [proposal, setAllProposalData] = useState([]);
@@ -21,7 +22,6 @@ function ProposalDetails() {
       {method: 'POST'})
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setAllProposalData(data);
       })
       .catch((err) => console.log(err));
@@ -122,7 +122,14 @@ function ProposalDetails() {
                       {element.subject}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.message}
+                      <Popover>
+                        <PopoverHandler>   
+                          <span>{element.message}</span>
+                        </PopoverHandler>
+                        <PopoverContent>
+                          <span style={{maxWidth: '200px'}}>{element.message}</span>
+                        </PopoverContent>
+                      </Popover>
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {new Date(element.date).toLocaleDateString() ===

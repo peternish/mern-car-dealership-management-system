@@ -1,5 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import AddSale from "../components/AddSale";
+import {Popover,
+        PopoverHandler,
+        PopoverContent,
+        } from '@material-tailwind/react';
 
 function Sales() {
   const [showSaleModal, setShowSaleModal] = useState(false);
@@ -17,11 +21,13 @@ function Sales() {
 
   // Fetching Data of All Sales
   const fetchSalesData = () => {
-    fetch('http://localhost:4000/api/sales/get')
+    fetch('http://localhost:4000/api/sales/get',
+    {
+      method: 'POST'
+    })
       .then((response) => response.json())
       .then((data) => {
         setAllSalesData(data);
-        console.log(data);
       })
       .catch((err) => console.log(err));
   };
@@ -99,7 +105,7 @@ function Sales() {
             <tbody className="divide-y divide-gray-200">
               {sales.map((element, index) => {
                 return (
-                  <tr key={element._id} className={element.income.reduce((partialSum, a) => parseInt(partialSum) + parseInt(a), 0) >= element.price ? 'bg-green-100' : 'bg-pink-100'}>
+                  <tr key={element._id} className={element.income.reduce((partialSum, a) => parseInt(partialSum) + parseInt(a), 0) >= element.price ? 'bg-green-100' : element.income.reduce((partialSum, a) => parseInt(partialSum) + parseInt(a), 0) >= 0.7 * element.price ? 'bg-yellow-100' : 'bg-pink-100'}>
                     <td className="whitespace-nowrap px-4 py-2  text-gray-900">
                       {element.vin}
                     </td>
@@ -113,7 +119,25 @@ function Sales() {
                       {element.price}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.income.reduce((partialSum, a) => parseInt(partialSum) + parseInt(a), 0)}
+                      <Popover>
+                        <PopoverHandler>
+                        <span>{element.income.reduce((partialSum, a) => parseInt(partialSum) + parseInt(a), 0)}</span>
+                        </PopoverHandler>
+                        <PopoverContent>
+                          <div className="grid grid-cols-2">
+                            <div className="grid">
+                              {element.salesDate.map((date, index) => {
+                                return <p key={`${element._id}${date}${index}`}>{date}: </p>
+                              })}
+                            </div>
+                            <div className="ml-3">
+                              {element.income.map((item, index) => {
+                                return <p key={`${element._id}${item}${index}`}>{item}</p>
+                              })}
+                            </div>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                       <span

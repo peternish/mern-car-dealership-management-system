@@ -6,11 +6,11 @@ const sales = require("../controller/sales");
 app.post("/add", sales.addSales);
 
 // Get All Sales
-app.get("/get/", sales.getSalesData);
-app.get("/getmonthly", sales.getMonthlySales);
+app.post("/get/", sales.getSalesData);
+// app.post("/getmonthly", sales.getMonthlySales);
 
 
-app.get("/get/:userID/totalsaleamount", sales.getTotalSalesAmount);
+app.post("/totalsalesamount", sales.getTotalSalesAmount);
 
 module.exports = app;
 

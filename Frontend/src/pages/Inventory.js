@@ -1,45 +1,23 @@
-import React, { useState, useEffect, useContext } from "react";
-// import AddProduct from "../components/AddProduct";
-import UpdateProduct from "../components/UpdateProduct";
-import AuthContext from "../AuthContext";
+import React, { useState, useEffect } from "react";
 
 function Inventory() {
-  const [showProductModal, setShowProductModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [updateProduct, setUpdateProduct] = useState([]);
   const [products, setAllProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState();
-  const [updatePage, setUpdatePage] = useState(true);
-  const [stores, setAllStores] = useState([]);
-
-  const authContext = useContext(AuthContext);
-  console.log('====================================');
-  console.log(authContext);
-  console.log('====================================');
 
   useEffect(() => {
     fetchProductsData();
-  }, [updatePage]);
+  }, []);
 
   // Fetching Data of All Products
   const fetchProductsData = () => {
-    fetch(`http://localhost:4000/api/product/get/${authContext.user}`)
+    fetch(`http://localhost:4000/api/product/get/`, {
+      method: 'POST'
+    })
       .then((response) => response.json())
       .then((data) => {
         setAllProducts(data);
       })
       .catch((err) => console.log(err));
   };
-
-  // Handle Search Term
-  // const handleSearchTerm = (e) => {
-  //   setSearchTerm(e.target.value);
-  //   if (searchTerm == '') {
-  //     fetchProductsData();
-  //   } else {
-  //     fetchSearchData();
-  //   }
-  // };
 
   return (
     <div className="col-span-12 lg:col-span-10  flex justify-center">
@@ -133,28 +111,6 @@ function Inventory() {
           <div className="flex justify-between pt-5 pb-3 px-3">
             <div className="flex gap-4 justify-center items-center ">
               <span className="font-bold">Inventory</span>
-              {/* <div className="flex justify-center items-center px-2 border-2 rounded-md ">
-                <img
-                  alt="search-icon"
-                  className="w-5 h-5"
-                  src={require("../assets/search-icon.png")}
-                />
-                <input
-                  className="border-none outline-none focus:border-none text-xs"
-                  type="text"
-                  placeholder="Search here"
-                  value={searchTerm}
-                  onChange={handleSearchTerm}
-                />
-              </div> */}
-            </div>
-            <div className="flex gap-4">
-              {/* <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 text-xs  rounded"
-                onClick={addProductModalSetting}
-              >
-                Add Product
-              </button> */}
             </div>
           </div>
           <table className="min-w-full divide-y-2 divide-gray-200 text-sm">
@@ -187,7 +143,7 @@ function Inventory() {
             <tbody className="divide-y divide-gray-200">
               {products.map((element, index) => {
                 return (
-                  <tr key={element._id} className={element.state == 'on sale' ? 'bg-green-100' : 'bg-white'}>
+                  <tr key={element._id} className={element.state === 'on sale' ? 'bg-green-100' : 'bg-white'}>
                     <td className="whitespace-nowrap px-4 py-2  text-gray-900">
                       {element.vin}
                     </td>

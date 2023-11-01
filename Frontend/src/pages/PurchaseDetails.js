@@ -9,8 +9,6 @@ function PurchaseDetails() {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [updateProduct, setUpdateProduct] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
-
-  const [searchTerm, setSearchTerm] = useState('');
   
   const authContext = useContext(AuthContext);
 
@@ -24,7 +22,6 @@ function PurchaseDetails() {
       {method: 'POST'})
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setAllPurchaseData(data);
       })
       .catch((err) => console.log(err));
@@ -32,7 +29,9 @@ function PurchaseDetails() {
 
   // Delete item
   const deleteItem = (id) => {
-    fetch(`http://localhost:4000/api/product/delete/${id}`)
+    fetch(`http://localhost:4000/api/product/delete/${id}`, {
+      method: 'POST'
+    })
       .then((response) => response.json())
       .then((response) => {
         setUpdatePage(!updatePage);
@@ -52,7 +51,9 @@ function PurchaseDetails() {
 
   // approve the Item for sale
   const approveItem = (id) => {
-    fetch(`http://localhost:4000/api/product/approve/${id}`)
+    fetch(`http://localhost:4000/api/product/approve/${id}`, {
+      method: 'POST'
+    })
     .then((response) => {
       if (response.status === 200) {
         setUpdatePage(!updatePage);
