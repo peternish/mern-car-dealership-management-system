@@ -145,13 +145,13 @@ function PurchaseDetails() {
                   Condition
                 </th>
                 <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
-                  Initial Exp
+                  Initial Exp/$
                 </th>
                 <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
-                  Additional Exp
+                  Add Exp/$
                 </th>
                 <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
-                  Total
+                  Total/$
                 </th>
                 <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
                   Approval State
@@ -187,30 +187,30 @@ function PurchaseDetails() {
                     <td className="whitespace-nowrap px-2 text-gray-700">
                       {element.initial}
                     </td>
-                    <td className="whitespace-nowrap px-2 text-gray-700">
-                      <Popover>
-                        <PopoverHandler>
+                    <Popover>
+                      <PopoverHandler>
+                        <td className="whitespace-nowrap px-2 text-gray-700 cursor-pointer">
                           <span>{element.additional.reduce((sum, a) => sum + parseInt(a.amount), 0)}</span>
-                        </PopoverHandler>
-                        <PopoverContent>
-                          {element.additional.map((item) => {
-                            return (
-                              <div className="grid grid-cols-5 gap-3">
-                                <div className="grid col-span-1">
-                                  {item.date}:
-                                </div>
-                                <div className="grid col-span-1">
-                                  ${item.amount}
-                                </div>
-                                <div className="grid col-span-3">
-                                  '{item.reason}'
-                                </div>
+                        </td>
+                      </PopoverHandler>
+                      <PopoverContent>
+                        {element.additional.map((item) => {
+                          return (
+                            <div className="grid grid-cols-5 gap-3">
+                              <div className="grid col-span-1">
+                                {item.date}:
                               </div>
-                            )
-                          })}
-                        </PopoverContent>
-                      </Popover>
-                    </td>
+                              <div className="grid col-span-1">
+                                ${item.amount}
+                              </div>
+                              <div className="grid col-span-3">
+                                '{item.reason}'
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </PopoverContent>
+                    </Popover>
                     <td className="whitespace-nowrap px-2 text-gray-700">
                       <span>{element.initial + element.additional.reduce((sum, a) => sum + parseInt(a.amount), 0)}</span>
                     </td>

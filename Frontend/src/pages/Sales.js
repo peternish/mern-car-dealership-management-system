@@ -97,10 +97,10 @@ function Sales() {
                   Payment Type
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Price
+                  Price/$
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Income
+                  Income/$
                 </th>
               </tr>
             </thead>
@@ -121,27 +121,27 @@ function Sales() {
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {element.price}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      <Popover>
-                        <PopoverHandler>
-                        <span>{element.income.reduce((partialSum, a) => parseInt(partialSum) + parseInt(a), 0)}</span>
-                        </PopoverHandler>
-                        <PopoverContent>
-                          <div className="grid grid-cols-2">
-                            <div className="grid">
-                              {element.salesDate.map((date, index) => {
-                                return <p key={`${element._id}${date}${index}`}>{date}: </p>
-                              })}
-                            </div>
-                            <div className="ml-3">
-                              {element.income.map((item, index) => {
-                                return <p key={`${element._id}${item}${index}`}>{item}</p>
-                              })}
-                            </div>
+                    <Popover>
+                      <PopoverHandler>
+                        <td className="whitespace-nowrap px-4 py-2 text-gray-700 cursor-pointer">
+                          <span>{element.income.reduce((partialSum, a) => parseInt(partialSum) + parseInt(a), 0)}</span>
+                        </td>
+                      </PopoverHandler>
+                      <PopoverContent>
+                        <div className="grid grid-cols-2">
+                          <div className="grid">
+                            {element.salesDate.map((date, index) => {
+                              return <p key={`${element._id}${date}${index}`}>{date}: </p>
+                            })}
                           </div>
-                        </PopoverContent>
-                      </Popover>
-                    </td>
+                          <div className="ml-3">
+                            {element.income.map((item, index) => {
+                              return <p key={`${element._id}${item}${index}`}>${item}</p>
+                            })}
+                          </div>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
                     <td className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                       <span
                           className="text-green-700 cursor-pointer"

@@ -25,7 +25,7 @@ export default function UpdateExpense({
 
   // POST Data
   const add = () => {
-    if (purchase.date !== '' && purchase.amount !== 0, purchase.reason !== '') {
+    if (purchase.date !== '' && purchase.amount !== 0 && purchase.reason !== '') {
         fetch("http://localhost:4000/api/product/addexpense", {
             method: "POST",
             headers: {
