@@ -219,7 +219,7 @@ function Dashboard() {
             <div className="mb-3 text-l">
             <span>
               Sales of This Year:
-              <span className="ml-5 text-red-500 text-2xl">
+              <span className="ml-5 text-2xl">
                 ${chart.series[0].data.reduce((sum, a) => sum + a, 0)}
               </span>
             </span>

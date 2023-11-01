@@ -17,11 +17,11 @@ app.post("/approve/:id", product.approveSelectedProduct);
 // Update Selected Product
 app.post("/update", product.updateSelectedProduct);
 
-// Search Product
-app.post("/search", product.searchProduct);
-
 // Get VIN
 app.post("/getVIN", product.getVIN);
+
+// Add Additional Expense
+app.post('/addexpense', product.addExpense);
 
 // http://localhost:4000/api/product/search?searchTerm=fa
 

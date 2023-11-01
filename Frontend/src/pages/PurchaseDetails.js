@@ -3,12 +3,16 @@ import AddPurchaseDetails from "../components/AddPurchaseDetails";
 import AuthContext from "../AuthContext";
 import UpdatePurchaseDetail from "../components/UpdatePurchaseDetail";
 import SearchByVIN from "../components/SearchByVIN";
+import UpdateExpense from "../components/UpdateExpense";
+
+import { Popover, PopoverContent, PopoverHandler } from "@material-tailwind/react";
 
 function PurchaseDetails() {
   const [showPurchaseModal, setPurchaseModal] = useState(false);
   const [purchase, setAllPurchaseData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [updateProduct, setUpdateProduct] = useState([]);
+  const [showUpdateExpenseModal, setUpdateExpenseModal] = useState(false);
   const [updatePage, setUpdatePage] = useState(true);
   
   const authContext = useContext(AuthContext);
@@ -53,14 +57,20 @@ function PurchaseDetails() {
     })
   }
 
-  // Modal for Pruchase Add
+  // Modal for Purchase Add
   const addSaleModalSetting = () => {
     setPurchaseModal(!showPurchaseModal);
   };
   
-  // Modal for Pruchase Add
+  // Modal for Purchase Update
   const updateProductModalSetting = (element) => {
     setShowUpdateModal(!showUpdateModal);
+    setUpdateProduct(element);
+  };
+
+  // Modal for Expense Add
+  const updateExpenseModalSetting = (element) => {
+    setUpdateExpenseModal(!showUpdateExpenseModal);
     setUpdateProduct(element);
   };
 
@@ -89,6 +99,14 @@ function PurchaseDetails() {
           />
         )}
         
+        {showUpdateExpenseModal && (
+          <UpdateExpense 
+            updateExpenseModalSetting={updateExpenseModalSetting}
+            handlePageUpdate={handlePageUpdate}
+            updatePurchaseData={updateProduct}
+          />
+        )}
+
         {/* Table  */}
         <div className="overflow-x-auto rounded-lg border bg-white border-gray-200 ">
           <div className="flex justify-between pt-5 pb-3 px-3">
@@ -108,34 +126,34 @@ function PurchaseDetails() {
           <table className="min-w-full divide-y-2 divide-gray-200 text-sm">
             <thead>
               <tr>
-              <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+              <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
                   VIN
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
                   Make
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
                   Model
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
                   Year
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
                   Date
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
                   Condition
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
                   Initial Exp
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
                   Additional Exp
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
                   Total
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                <th className="whitespace-nowrap px-2 py-2 text-left font-medium text-gray-900">
                   Approval State
                 </th>
               </tr>
@@ -145,40 +163,61 @@ function PurchaseDetails() {
               {purchase.map((element, index) => {
                 return (
                   <tr key={element._id} className={element.state === 'on sale' ? 'bg-green-100' : 'bg-white'}>
-                    <td className="whitespace-nowrap px-4 py-2  text-gray-900">
+                    <td className="whitespace-nowrap px-2  text-gray-900">
                       {element.vin}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <td className="whitespace-nowrap px-2 text-gray-700">
                       {element.manufacturer}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <td className="whitespace-nowrap px-2 text-gray-700">
                       {element.model}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <td className="whitespace-nowrap px-2 text-gray-700">
                       {element.year}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <td className="whitespace-nowrap px-2 text-gray-700">
                       {new Date(element.purchaseDate).toLocaleDateString() ===
                       new Date().toLocaleDateString()
                         ? "Today"
                         : new Date(element.purchaseDate).toLocaleDateString()}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <td className="whitespace-nowrap px-2 text-gray-700">
                       {element.condition}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <td className="whitespace-nowrap px-2 text-gray-700">
                       {element.initial}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.additional}
+                    <td className="whitespace-nowrap px-2 text-gray-700">
+                      <Popover>
+                        <PopoverHandler>
+                          <span>{element.additional.reduce((sum, a) => sum + parseInt(a.amount), 0)}</span>
+                        </PopoverHandler>
+                        <PopoverContent>
+                          {element.additional.map((item) => {
+                            return (
+                              <div className="grid grid-cols-5 gap-3">
+                                <div className="grid col-span-1">
+                                  {item.date}:
+                                </div>
+                                <div className="grid col-span-1">
+                                  ${item.amount}
+                                </div>
+                                <div className="grid col-span-3">
+                                  '{item.reason}'
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </PopoverContent>
+                      </Popover>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.initial + element.additional}
+                    <td className="whitespace-nowrap px-2 text-gray-700">
+                      <span>{element.initial + element.additional.reduce((sum, a) => sum + parseInt(a.amount), 0)}</span>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <td className="whitespace-nowrap px-2 text-gray-700">
                       {element.state}
                     </td>        
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <td className="whitespace-nowrap px-2 text-gray-700">
                       <span
                           className="text-green-700 cursor-pointer"
                           onClick={() => updateProductModalSetting(element)}
@@ -187,24 +226,34 @@ function PurchaseDetails() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                           </svg>
                         </span>
-                    </td>
-                    <td>
+                    </td>                    
+                    <td className="whitespace-nowrap px-2 text-gray-700">
                       <span
-                        className="text-red-600 px-2 cursor-pointer"
-                        onClick={() => deleteItem(element._id)}
-                      >
+                          className="text-green-700 cursor-pointer"
+                          onClick={() => updateExpenseModalSetting(element)}
+                        >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                      </span>
+                        </span>
                     </td>
-                    <td>
+                    <td style={{minWidth:'100px'}}>
                         <button
                           className="text-blue-600 px-2 cursor-pointer hover:bg-slate-300 font-bold p-2 rounded"
                           onClick={() => approveItem(element._id)}
                         >
                           {element.state}
                         </button>
+                    </td>
+                    <td>
+                      <span
+                        className="text-red-600 px-4 cursor-pointer"
+                        onClick={() => deleteItem(element._id)}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                        </svg>
+                      </span>
                     </td>
                   </tr>
                 );

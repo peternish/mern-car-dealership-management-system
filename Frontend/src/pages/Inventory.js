@@ -21,7 +21,7 @@ function Inventory() {
   };
 
   return (
-    <div className="col-span-12 lg:col-span-10  flex justify-center">
+    <div className="col-span-12 lg:col-span-10 flex justify-center">
       <div className=" flex flex-col gap-5 w-11/12">
         {/* <div className="bg-white rounded p-3">
           <span className="font-semibold px-4">Overall Inventory</span>
@@ -134,9 +134,6 @@ function Inventory() {
                   Condition
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Starting Price
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Availability
                 </th>
               </tr>
@@ -160,9 +157,6 @@ function Inventory() {
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {element.condition}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {parseInt((element.initial + element.additional) * 1.3)}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {element.state}

@@ -13,7 +13,6 @@ const addPurchase = async (req, res) => {
         purchaseDate: req.body.purchaseDate,
         condition: req.body.condition,
         initial: req.body.initial,
-        additional: req.body.additional,
         state: 'not on sale',
       });
       const result = await addPurchaseDetails.save();
@@ -41,7 +40,7 @@ const getTotalPurchaseAmount = async (req, res) => {
   let totalPurchaseAmount = 0;
   const purchaseData = await Product.find();
   purchaseData.forEach((purchase) => {
-    totalPurchaseAmount += (purchase.initial + purchase.additional);
+    totalPurchaseAmount += (purchase.initial + purchase.additional.reduce((sum, a) => sum + parseInt(a.amount), 0));
   });
   res.json({ totalPurchaseAmount });
 };

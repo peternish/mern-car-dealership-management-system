@@ -76,7 +76,7 @@ const approveSelectedProduct = async (req, res) => {
 // Update Selected Product
 const updateSelectedProduct = async (req, res) => {
   try {
-    const updatedResult = await Product.findOneAndUpdate(
+    await Product.findOneAndUpdate(
       { vin: req.body.vin },
       {
         manufacturer: req.body.manufacturer,
@@ -85,7 +85,6 @@ const updateSelectedProduct = async (req, res) => {
         purchaseDate: req.body.purchaseDate,
         condition: req.body.condition,
         initial: req.body.initial,
-        additional: req.body.additional
       },
       { returnOriginal: false }
     );
@@ -94,15 +93,6 @@ const updateSelectedProduct = async (req, res) => {
     console.log(error);
     res.status(402).send();
   }
-};
-
-// Search Products
-const searchProduct = async (req, res) => {
-  const searchTerm = req.query.searchTerm;
-  const products = await Product.find({
-    vin: { $regex: searchTerm, $options: "i" },
-  });
-  res.json(products);
 };
 
 //  Get VIN Numbers of cars on sale
@@ -117,12 +107,37 @@ const getVIN = async (req, res) => {
   res.json(vin);
 }
 
+// Add Additional Expense
+const addExpense = async (req, res) => {
+  try {
+    const product = await Product.findOne(
+      {vin: req.body.vin}
+    );
+    if (!product) {
+      res.status(402).send();
+    }
+    const newAdditional = product.additional.concat(
+      {
+        date: req.body.date,
+        amount: req.body.amount,
+        reason: req.body.reason,
+      }
+    )
+    product.additional = newAdditional;
+    product.save();
+    res.status(200).send();
+  } catch (err) {
+    console.log(err);
+    res.status(402).send();
+  }
+}
+
 module.exports = {
   addProduct,
   getAllProducts,
   deleteSelectedProduct,
   approveSelectedProduct,
   updateSelectedProduct,
-  searchProduct,
   getVIN,
+  addExpense,
 };
