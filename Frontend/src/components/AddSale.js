@@ -10,7 +10,7 @@ export default function AddSale({
 }) {
   const [sale, setSale] = useState({
     vinNumber: updateInfo.vin,
-    salesDate: updateInfo.salesDate ? updateInfo.salesDate[0] : '',
+    salesDate: updateInfo.salesDate ? updateInfo.salesDate[updateInfo.salesDate.length - 1] : '',
     paymentType: updateInfo.paymentType,
     price: updateInfo.price,
     income: updateInfo.income ? updateInfo.income[0] : '',

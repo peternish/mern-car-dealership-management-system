@@ -110,7 +110,7 @@ function Sales() {
                       {element.vin}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.salesDate[0]}
+                      {element.salesDate[element.salesDate.length - 1]}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {element.paymentType}

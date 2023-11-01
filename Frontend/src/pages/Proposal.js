@@ -122,12 +122,12 @@ function ProposalDetails() {
                       {element.subject}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      <Popover>
+                      <Popover placement="top-end">
                         <PopoverHandler>   
                           <span>{element.message}</span>
                         </PopoverHandler>
                         <PopoverContent>
-                          <span style={{maxWidth: '200px'}}>{element.message}</span>
+                          <span>{element.message}</span>
                         </PopoverContent>
                       </Popover>
                     </td>

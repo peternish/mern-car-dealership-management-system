@@ -2,34 +2,9 @@ import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Option, Select } from "@material-tailwind/react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-export const data = {
-  labels: ["Toyota", "Hyundai", "KIA", "Volvo", "Wagen", "Ford"],
-  datasets: [
-    {
-      data: [8, 9, 15,0,0,0],
-      backgroundColor: [
-        "rgba(255, 99, 132, 0.2)",
-        "rgba(54, 162, 235, 0.2)",
-        "rgba(255, 206, 86, 0.2)",
-        "rgba(75, 192, 192, 0.2)",
-        "rgba(153, 102, 255, 0.2)",
-        "rgba(255, 159, 64, 0.2)",
-      ],
-      borderColor: [
-        "rgba(255, 99, 132, 1)",
-        "rgba(54, 162, 235, 1)",
-        "rgba(255, 206, 86, 1)",
-        "rgba(75, 192, 192, 1)",
-        "rgba(153, 102, 255, 1)",
-        "rgba(255, 159, 64, 1)",
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
 
 function Dashboard() {
   const [saleAmount, setSaleAmount] = useState([]);
@@ -43,10 +18,11 @@ function Dashboard() {
 
   const [manufacturerdata, setManufacturerdata] = useState({});
   const [doughnutBackground, setDoughnutBackground] = useState([]);
+  const [monthlySalesData, setMonthlySalesData] = useState({});
   const [chart, setChart] = useState({
     options: {
       chart: {
-        id: "basic-bar",
+        id: "monthly-sales",
       },
       xaxis: {
         categories: [
@@ -175,7 +151,10 @@ function Dashboard() {
       method: 'POST'
     })
       .then((res) => res.json())
-      .then((res) => updateChartData(res.salesAmount))
+      .then((res) => {
+        setMonthlySalesData(res);
+        updateChartData(res['2023']);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -231,15 +210,23 @@ function Dashboard() {
           </div>
         </article>
       </div>
-
       <div className="grid grid-cols-1 col-span-12 lg:col-span-10 gap-6 lg:grid-cols-2  p-4 ">
         <div className="flex flex-col gap-4 rounded-lg border  border-gray-100 bg-white p-6  ">
+
+        <div className="mb-3 w-72">
+            <select  onChange={(e) => updateChartData(monthlySalesData[e.target.value])}>
+              <option>2023</option>
+              <option>2024</option>
+              <option>2025</option>
+            </select>
+          </div>
+          <div>
           <Chart
             options={chart.options}
             series={chart.series}
             type="bar"
-            width="500"
           />
+          </div>
         </div>
         <div className="flex content-center flex-col gap-4 rounded-lg border border-gray-100 bg-white p-6">
           <div className="w-3/4">

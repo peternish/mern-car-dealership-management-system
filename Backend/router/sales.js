@@ -7,9 +7,11 @@ app.post("/add", sales.addSales);
 
 // Get All Sales
 app.post("/get/", sales.getSalesData);
-// app.post("/getmonthly", sales.getMonthlySales);
 
+// get monthly sales
+app.post("/getmonthly", sales.getMonthlySales);
 
+// get total sales amount
 app.post("/totalsalesamount", sales.getTotalSalesAmount);
 
 module.exports = app;

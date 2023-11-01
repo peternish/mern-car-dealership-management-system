@@ -9,7 +9,6 @@ const addSales = async (req, res) => {
     })
 
     if (!product) {
-      console.log('ewe');
       await new Sales({
         vin: req.body.vinNumber,
         salesDate: [req.body.salesDate],
@@ -75,18 +74,21 @@ const getMonthlySales = async (req, res) => {
   try {
     const sales = await Sales.find();
 
-    // Initialize array with 12 zeros
-    const salesAmount = [];
-    salesAmount.length = 12;
-    salesAmount.fill(0)
+    // Initialize the sales amount
+    let salesAmount = {
+      '2023': Array(12).fill(0), 
+      '2024': Array(12).fill(0), 
+      '2025': Array(12).fill(0),
+    }
 
     sales.forEach((sale) => {
-      const monthIndex = parseInt(sale.SaleDate.split("-")[1]) - 1;
-
-      salesAmount[monthIndex] += sale.TotalSaleAmount;
+      sale.salesDate.forEach((date, i) => {
+        const year = date.split("-")[0];
+        const monthIndex = parseInt(date.split("-")[1]) - 1;
+        salesAmount[year][monthIndex] += parseInt(sale.income[i]);
+      })
     });
-
-    res.status(200).json({ salesAmount });
+    res.status(200).json(salesAmount);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
