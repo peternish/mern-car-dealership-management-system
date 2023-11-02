@@ -2,9 +2,6 @@ const express = require("express");
 const app = express();
 const product = require("../controller/product");
 
-// Add Product
-app.post("/add", product.addProduct);
-
 // Get All Products
 app.post("/get/", product.getAllProducts);
 
@@ -13,6 +10,9 @@ app.post("/delete/:id", product.deleteSelectedProduct);
 
 // approve selectd product
 app.post("/approve/:id", product.approveSelectedProduct);
+
+// apprive selected expense
+app.post('/approveexpense/:id', product.approveSelectedExpense);
 
 // Update Selected Product
 app.post("/update", product.updateSelectedProduct);

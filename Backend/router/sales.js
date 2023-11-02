@@ -14,6 +14,12 @@ app.post("/getmonthly", sales.getMonthlySales);
 // get total sales amount
 app.post("/totalsalesamount", sales.getTotalSalesAmount);
 
+// approve the sales of a product
+app.post("/approve/:id", sales.approveSelectedSale);
+
+// get not approved sales data
+app.post("/getnotification", sales.getNotification);
+
 module.exports = app;
 
 

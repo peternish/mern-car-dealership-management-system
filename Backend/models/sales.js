@@ -20,6 +20,10 @@ const SaleSchema = new mongoose.Schema(
     },
     income: {
       type: Array,
+    },
+    state: {
+      type: Array,
+      required: true,
     }
   },
   { timestamps: true }

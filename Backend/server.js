@@ -3,7 +3,6 @@ const { main } = require("./models/index");
 const productRoute = require("./router/product");
 const purchaseRoute = require("./router/purchase");
 const salesRoute = require("./router/sales");
-const proposalRoute = require('./router/proposal');
 const cors = require("cors");
 const User = require("./models/users");
 const Product = require("./models/product");
@@ -24,20 +23,14 @@ app.use("/api/purchase", purchaseRoute);
 // Sales API
 app.use("/api/sales", salesRoute);
 
-// Proposal API
-app.use('/api/proposal', proposalRoute);
-
 // ------------- Signin --------------
 let userAuthCheck;
 app.post("/api/login", async (req, res) => {
-  console.log(req.body);
-  // res.send("hi");
   try {
     const user = await User.findOne({
       email: req.body.email,
       password: req.body.password,
     });
-    console.log("USER: ", user);
     if (user) {
       res.send(user);
       userAuthCheck = user;
@@ -77,13 +70,6 @@ app.post("/api/register", (req, res) => {
     .catch((err) => console.log("Signup: ", err));
   console.log("request: ", req.body);
 });
-
-
-app.get("/testget", async (req,res)=>{
-  const result = await Product.findOne({ _id: '6429979b2e5434138eda1564'})
-  res.json(result)
-
-})
 
 // Here we are listening to the server
 app.listen(PORT, () => {

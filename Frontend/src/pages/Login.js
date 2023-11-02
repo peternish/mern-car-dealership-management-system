@@ -1,8 +1,8 @@
 // import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../AuthContext";
-import logo from '../assets/logo.png'
+import logo from '../assets/car.png'
 import signin from '../assets/signin.png'
 
 function Login() {
@@ -55,7 +55,7 @@ function Login() {
         body: JSON.stringify(form),
       })
         .then((result) => {
-          console.log("User login", result);
+          console.log("User login");
         })
         .catch((error) => {
           console.log("Something went wrong ", error);
@@ -74,21 +74,20 @@ function Login() {
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 h-screen  items-center place-items-center">
         <div className="flex justify-center">
-          <img src={signin} alt="signin image" />
+          <img src={signin} alt="signin" />
         </div>
         <div className="w-full max-w-md space-y-8 p-10 rounded-lg">
           <div>
             <img
               className="mx-auto h-12 w-auto"
               src={logo}
-              alt="logo image"
+              alt="logo"
             />
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
               Signin to your account
             </h2>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            {/* <input type="hidden" name="remember" defaultValue="true" /> */}
             <div className="-space-y-px rounded-md shadow-sm">
               <div className="my-5">
                 <label htmlFor="email-address" className="sr-only">
@@ -123,32 +122,6 @@ function Login() {
                 />
               </div>
             </div>
-
-            {/* <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-900"
-                >
-                  Remember me
-                </label>
-              </div>
-
-              <div className="text-sm">
-                <span
-                  className="font-medium text-indigo-600 hover:text-indigo-500"
-                >
-                  Forgot your password?
-                </span>
-              </div>
-            </div> */}
-
             <div>
               <button
                 type="submit"
@@ -163,15 +136,6 @@ function Login() {
                 </span>
                 Sign in
               </button>
-              {/* <p className="mt-2 text-center text-sm text-gray-600">
-                Or{" "}
-                <span
-                  className="font-medium text-indigo-600 hover:text-indigo-500"
-                >
-                  Don't Have an Account, Please{" "}
-                  <Link to="/register"> Register now </Link>
-                </span>
-              </p> */}
             </div>
           </form>
         </div>

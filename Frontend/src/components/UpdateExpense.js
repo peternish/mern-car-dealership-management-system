@@ -7,7 +7,6 @@ export default function UpdateExpense({
   updateExpenseModalSetting,
   handlePageUpdate
 }) {
-    console.log(updatePurchaseData);
   const [purchase, setPurchase] = useState({
     vin: updatePurchaseData.vin,
     date: '',
@@ -34,7 +33,6 @@ export default function UpdateExpense({
             body: JSON.stringify(purchase),
           })
             .then((result) => {
-              console.log(result);
               handlePageUpdate();
               if (result.status === 200) {
                 alert("Additional Expense information successfully updated!");
@@ -133,7 +131,7 @@ export default function UpdateExpense({
                                 handleInputChange(e.target.name, e.target.value)
                               }
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="Initial Amount"
+                              placeholder="Amount"
                             />
                           </div>
                         </div>
@@ -152,7 +150,7 @@ export default function UpdateExpense({
                                 handleInputChange(e.target.name, e.target.value)
                               }
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="Additional Expenses"
+                              placeholder="Input the Use of This Expense"
                             />
                           </div>
                       </form>

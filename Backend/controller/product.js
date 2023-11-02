@@ -1,38 +1,6 @@
 const Product = require("../models/product");
 const Sales = require("../models/sales");
 
-// Add Post
-const addProduct = (req, res) => {
-
-  const existence = Product.findOne({
-    vin: req.body.vin
-  });
-  console.log(existence);
-
-  if (existence) {
-    console.log('vin number already exists');
-    res.status(402).send()
-  } else {
-    const addProduct = new Product({
-      name: req.body.name,
-      manufacturer: req.body.manufacturer,
-      stock: 0,
-      description: req.body.description,
-    });
-  
-    addProduct
-      .save()
-      .then((result) => {
-        res.status(200).send(result);
-      })
-      .catch((err) => {
-        res.status(402).send(err);
-      });
-  }
-
-
-};
-
 // Get All Products
 const getAllProducts = async (req, res) => {
   const findAllProducts = await Product.find({
@@ -67,6 +35,27 @@ const approveSelectedProduct = async (req, res) => {
     product.state = newState;
     await product.save();
     res.status(200).send();
+  } catch (err) {
+    console.log(err);
+    res.status(402).send();
+  }
+};
+
+// Approve Selected Expense
+const approveSelectedExpense = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).send("Product not found");
+    }
+
+    const newState = 'approved';
+    for (i in product.additional) {
+      product.additional[i].state = newState;
+    };
+    product.markModified('additional');
+    await product.save();
+    res.status(200).send('success');
   } catch (err) {
     console.log(err);
     res.status(402).send();
@@ -121,6 +110,7 @@ const addExpense = async (req, res) => {
         date: req.body.date,
         amount: req.body.amount,
         reason: req.body.reason,
+        state: 'not approved',
       }
     )
     product.additional = newAdditional;
@@ -133,10 +123,10 @@ const addExpense = async (req, res) => {
 }
 
 module.exports = {
-  addProduct,
   getAllProducts,
   deleteSelectedProduct,
   approveSelectedProduct,
+  approveSelectedExpense,
   updateSelectedProduct,
   getVIN,
   addExpense,

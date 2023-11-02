@@ -22,20 +22,20 @@ export default function Header() {
   const authContext = useContext(AuthContext);
   const localStorageData = JSON.parse(localStorage.getItem("user"));
 
-  const [unreadMessage, setUnreadMessage] = useState();
+  const [notification, setNotification] = useState();
 
   useEffect(() => {
-    fetchUnreadMessage();
+    fetchNotifications();
   }, [])
 
-  const fetchUnreadMessage = () => {
-    fetch('http://localhost:4000/api/proposal/getunread', 
+  const fetchNotifications = () => {
+    fetch('http://localhost:4000/api/sales/getnotification', 
     {
       method: "POST"
     })
     .then((res) => res.json())
     .then((res) => {
-      setUnreadMessage(res);
+      setNotification(res);
     })
     .catch ((err) => {
       console.log(err);
@@ -70,7 +70,7 @@ export default function Header() {
                         <span className="sr-only">Notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
                         <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -right-1 dark:border-gray-900">
-                          {unreadMessage}
+                          {notification}
                         </div>
                       </button>
 
@@ -172,7 +172,7 @@ export default function Header() {
                         <span className="sr-only">Notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
                         <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -right-1 dark:border-gray-900">
-                          {unreadMessage}
+                          {notification}
                         </div>
                       </button>
                   </div>

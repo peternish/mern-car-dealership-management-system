@@ -15,6 +15,7 @@ const addSales = async (req, res) => {
         paymentType: req.body.paymentType,
         price: req.body.price,
         income: [req.body.income],
+        state: ['not approved']
       }).save();
     
       await Product.findOneAndUpdate(
@@ -26,6 +27,7 @@ const addSales = async (req, res) => {
     } else {
       product.salesDate.push(req.body.salesDate);
       product.income.push(req.body.income);
+      product.state.push('not approved');
       await product.save();
     }
     res.status(200).send();
@@ -38,7 +40,7 @@ const addSales = async (req, res) => {
 // Get All Sales Data
 const getSalesData = async (req, res) => {
   const findAllSalesData = await Sales.find()
-    .sort({ _id: -1 });
+  .sort({ _id: -1 });
   res.json(findAllSalesData);
 };
 
@@ -95,6 +97,50 @@ const getMonthlySales = async (req, res) => {
   }
 };
 
+// Approve Selected Sales
+const approveSelectedSale = async (req, res) => {
+  try {
+    const product = await Sales.findById(req.params.id);
+    if (!product) {
+      return res.status(404).send("Sales not found");
+    }
+    const newState = 'approved';
+    for (i in product.state) {
+      product.state[i] = newState;
+    };
+    product.markModified();
+    await product.save();
+    res.status(200).send();
+  } catch (err) {
+    console.log(err);
+    res.status(402).send();
+  }
+};
 
+// Get Notification
+const getNotification = async (req, res) => {
+  try {
+      let count = 0; 
+      const sales = await Sales.find();
+      for (i in sales) {
+        for (j in sales[i].state) {
+          if (sales[i].state[j] === 'not approved') {
+            count += 1;
+          }
+        }
+      }
+      const products = await Product.find();
+      for (i in products) {
+        for (j in products[i].additional) {
+          if (products[i].additional[j].state === 'not approved') {
+            count += 1;
+          }
+        }
+      }
+      res.json(count);
+  } catch (err) {
+      console.log(err);
+  }
+}
 
-module.exports = { addSales, getMonthlySales, getSalesData,  getTotalSalesAmount};
+module.exports = { addSales, getMonthlySales, getSalesData,  getTotalSalesAmount, approveSelectedSale, getNotification};

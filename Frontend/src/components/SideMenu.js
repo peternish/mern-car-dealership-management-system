@@ -52,14 +52,6 @@ function SideMenu() {
                   <span className="text-sm font-medium"> Sales</span>
                 </Link>
 
-                <Link
-                  to="/proposals"
-                  className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 focus:ring hover:text-gray-700"
-                >
-                  <img alt="sale-icon" src={require("../assets/supplier-icon.png")} />
-                  <span className="text-sm font-medium">Message Room</span>
-                </Link>
-
               </nav>
             </div>
             <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
@@ -81,23 +73,35 @@ function SideMenu() {
           <div className="h-full flex-col justify-between bg-white hidden lg:flex ">
           <div className="px-4 py-6">
             <nav aria-label="Main Nav" className="mt-6 flex flex-col space-y-1">
-              <Link
-                to="/inventory"
-                className="flex items-center gap-2 rounded-lg hover:bg-gray-100 focus:ring px-4 py-2 text-gray-700"
-              >
-                <img
-                  alt="inventory-icon"
-                  src={require("../assets/inventory-icon.png")}
-                />
-                <span className="text-sm font-medium"> Inventory </span>
-              </Link>
-              <Link
-                to="/proposals"
-                className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 focus:ring hover:text-gray-700"
-              >
-                <img alt="sale-icon" src={require("../assets/supplier-icon.png")} />
-                <span className="text-sm font-medium">Message Room</span>
-              </Link>
+            <Link
+                  to="/inventory"
+                  className="flex items-center gap-2 rounded-lg hover:bg-gray-100 focus:ring px-4 py-2 text-gray-700"
+                >
+                  <img
+                    alt="inventory-icon"
+                    src={require("../assets/inventory-icon.png")}
+                  />
+                  <span className="text-sm font-medium"> Inventory </span>
+                </Link>
+
+                <Link
+                  to="/purchase"
+                  className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 focus:ring hover:text-gray-700"
+                >
+                  <img
+                    alt="purchase-icon"
+                    src={require("../assets/supplier-icon.png")}
+                  />
+                  <span className="text-sm font-medium"> Expense </span>
+                </Link>
+
+                <Link
+                  to="/sales"
+                  className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 focus:ring hover:text-gray-700"
+                >
+                  <img alt="sale-icon" src={require("../assets/supplier-icon.png")} />
+                  <span className="text-sm font-medium"> Sales</span>
+                </Link>
 
             </nav>
           </div>

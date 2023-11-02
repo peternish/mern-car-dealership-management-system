@@ -11,7 +11,6 @@ import ProtectedWrapper from "./ProtectedWrapper";
 import { useEffect, useState } from "react";
 import Sales from "./pages/Sales";
 import PurchaseDetails from "./pages/PurchaseDetails";
-import ProposalDetails from "./pages/Proposal";
 
 const App = () => {
   const [user, setUser] = useState("");
@@ -76,12 +75,12 @@ const App = () => {
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/purchase" element={<PurchaseDetails />} />
               <Route path="/sales" element={<Sales />} />
-              <Route path="/proposals" element={<ProposalDetails />} />
               </>
               :
               <>
               <Route path="/inventory" element={<Inventory />} />
-              <Route path="/proposals" element={<ProposalDetails />} />
+              <Route path="/purchase" element={<PurchaseDetails />} />
+              <Route path="/sales" element={<Sales />} />
               </>
             }
           </Route>

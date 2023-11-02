@@ -13,6 +13,7 @@ const addPurchase = async (req, res) => {
         purchaseDate: req.body.purchaseDate,
         condition: req.body.condition,
         initial: req.body.initial,
+        additional: [],
         state: 'not on sale',
       });
       const result = await addPurchaseDetails.save();
@@ -27,9 +28,7 @@ const addPurchase = async (req, res) => {
 
 // Get All Purchase Data
 const getPurchaseData = async (req, res) => {
-  const findAllPurchaseData = await Product.find({
-    state: { $in: ['on sale', 'not on sale'] }
-  })
+  const findAllPurchaseData = await Product.find()
     .sort({ _id: -1 })
     .populate("vin"); // -1 for descending order
   res.json(findAllPurchaseData);
