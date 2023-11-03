@@ -29,7 +29,6 @@ function Login() {
       fetch("http://localhost:4000/api/login")
         .then((response) => response.json())
         .then((data) => {
-          alert("Successfully Login");
           localStorage.setItem("user", JSON.stringify(data));
           authContext.signin(data._id, () => {
             navigate("/");
